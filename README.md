@@ -11,4 +11,5 @@ All it is is a python program that is under 200 lines of code. It's compatible w
 Simply mark the file as executable (usually `chmod +x` and run it. It has no special dependencies outside of `touch` and `python3`.
 
 Developed by [Gavyn Rogers](https://github.com/gavynsrogers)
+
 gavyn.rogers97@gmail.com
