@@ -2,6 +2,7 @@
 import random
 import os
 import re
+import shlex
 
 #Universal constant referenced further on, this is a list of every character RAMEN considers "valid"
 valid_chars = list('1234567890abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
@@ -25,14 +26,13 @@ print('''\
 #Generate a string of x random characters
 def rand_str(x):
     randstr = ''
-    for val in range(0, x):
+    if x:
         randstr = randstr + random.choice(valid_chars)
     return randstr
 
 #GIGANTIC CAUTION SIGN BECAUSE OF THE NATURE OF THE PROGRAM
 def caution(x):
-    for val in range (0,x):
-        print('''
+    print('''
  _________________________________________________________________
 |/  /  /  /  /  /  /  /  /  /  /  /  /  /  /  /  /  /  /  /  /  / |
 |  /  /  /  /  /  /  /  /  /  /  /  /  /  /  /  /  /  /  /  /  /  |
@@ -49,16 +49,8 @@ print('Would you like to encrypt or decrypt a text file? (e/d)')
 e_or_d = ''
 while True:
     e_or_d = input(': ')
-    if e_or_d == 'e' \
-    or e_or_d == 'E':
-        e_or_d = 'e'
+    if e_or_d.lower() in 'ed':
         break
-    elif e_or_d == 'd' \
-    or e_or_d == 'D':
-        e_or_d = 'd'
-        break
-    else:
-        print('That had to have been \"e\" or \"d\". Try again (CTRL + C to cancel)')
 print('The path to your file can be relative to your current directory (cd).')
 #Proceed with encryption
 if e_or_d == 'e':
@@ -75,7 +67,7 @@ if e_or_d == 'e':
             break
         else:
             print('Please re-enter, the file location you gave does not exist.')
-    os.system('touch {0}_temp && touch {0}_meta'.format(file_loc))
+    os.system('touch {0}_temp && touch {0}_meta'.format(shlex.quote(file_loc)))
     temp = ''
     with open(file_loc, 'r') as f:
         temp = f.read().replace('\n', '')
@@ -97,7 +89,7 @@ if e_or_d == 'e':
         #Marks the end of the file (E = End) in the meta.
         f2.write('[E]')
     os.system('rm {0} && mv {0}_temp {0}'.format(file_loc))
-    print('Encryption complete at {}\n\n'.format(file_loc) +
+    print('\nEncryption complete at {}\n\n'.format(file_loc) +
           'Thank you for using RAMEN.\n')
     caution(1)
     print('If you lose your _meta file, you will NOT be able to recover\n' +
@@ -125,8 +117,7 @@ else:
     #Learn the location of the meta file
     meta_loc = ''
     is_meta_same_format = input('Is the meta file location the same as the first one & \"_meta\"? (y/n) :')
-    if is_meta_same_format == 'y' \
-    or is_meta_same_format == 'Y':
+    if is_meta_same_format in 'Yy':
         meta_loc = file_loc + '_meta'
     else:
         while True:
@@ -165,7 +156,7 @@ else:
                         word = word[1 :]
             except IndexError:
                 pass
-    os.system('rm {0} && rm {1} && mv {0}_temp {0}'.format(file_loc, meta_loc))
+    os.system('rm {0} && rm {1} && mv {0}_temp {0}'.format(shlex.quote(file_loc), shlex.quote(meta_loc)))
 
     print('Your file: {} has been decrypted and the original meta file has been removed.\n'.format(file_loc) +
           'Thanks for using RAMEN.')
