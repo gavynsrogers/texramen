@@ -12,4 +12,4 @@ Simply mark the file as executable (usually `chmod +x` and run it. It has no spe
 
 Developed by [Gavyn Rogers](https://github.com/gavynsrogers)
 
-gavyn.rogers97@gmail.com
+gavyn.rogers97@protonmail.com
