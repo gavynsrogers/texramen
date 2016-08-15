@@ -25,7 +25,7 @@ print('''\
         RAndoM ENcryption\n\n''')
 
 print('DISCLAIMER: RAMEN IS NOT TRUE CRYPTOGRAPHY.\n \
-      It is human proof, not computer proof.')
+It is human proof, not computer proof.')
 # Generate a string of x random characters
 
 
@@ -63,9 +63,9 @@ if e_or_d == 'e':
     file_loc = ''
     # The code is much nicer if the output files don't have a file extension.
     while True:
-        print('What is the location of the textfile that you wish to \
-              encrypt? \n Its file extension (.txt,.py,.html,etc) must be \
-              empty, though you may add one later if you wish.')
+        print('What is the location of the textfile that you wish to encrypt? \
+\nIts file extension (.txt,.py,.html,etc) must be empty, though you may add \
+one later if you wish.')
         file_loc = input(': ')
         does_file_exist = os.path.isfile(file_loc)
         if '.' not in file_loc and does_file_exist is True:
@@ -78,8 +78,8 @@ if e_or_d == 'e':
         temp = f.read().replace('\n', '')
     temp_list = re.findall(r"[\w']+|[.,!?;:]", temp)
     # Open file_loc_temp and file_loc_meta
-    with open(file_loc + '_temp', 'a') as f,
-    open(file_loc + '_meta', 'a') as f2:
+    with open(file_loc + '_temp', 'a') as f, \
+            open(file_loc + '_meta', 'a') as f2:
         # Write a random string of a random length between 5 and 20 to the
         # beginningof the output file and mark it as such in the meta file.
         for idx, word in enumerate(temp_list):
@@ -96,16 +96,16 @@ if e_or_d == 'e':
           'Thank you for using RAMEN.\n')
     caution()
     print('If you lose your _meta file, you will NOT be able to recover\n \
-          your data! I, the creator, am not responsible for this.\n')
+your data! I, the creator, am not responsible for this.\n')
     print('Also, please do not change the formatting of either file. I \
-          cannot\n guarantee the decryption process will work if you do.')
+cannot\n guarantee the decryption process will work if you do.')
 
 # Proceed with decryption
 else:
     caution()
     print('IT IS RECOMMENDED YOU BACK UP YOUR FILES BEFORE DOING THIS!!!\n \
-          IN THE EVENT THERE IS AN ERROR, YOUR DATA WILL BECOME UNREADABLE.\n \
-          PROCEED WITH CAUTION.')
+IN THE EVENT THERE IS AN ERROR, YOUR DATA WILL BECOME UNREADABLE.\n \
+PROCEED WITH CAUTION.')
     # Learn the location of the file to be decrypted
     file_loc = ''
     while True:
@@ -121,29 +121,29 @@ else:
     # Learn the location of the meta file
     meta_loc = ''
     is_meta_same_format = input('Is the meta file location the same as the \
-                                first one & \"_meta\"? (y/n) :')
+first one & \"_meta\"? (y/n) :')
     if is_meta_same_format in 'Yy':
         meta_loc = file_loc + '_meta'
     else:
         while True:
-            print('What is the location of the meta file?\n' +
-                  '(It should simply be \"*/*_meta\")')
+            print('What is the location of the meta file?\n \
+(It should simply be \"*/*_meta\")')
             meta_loc = input(': ')
             does_file_exist = os.path.isfile(meta_loc)
-            if does_file_exist is True
-            and meta_loc.endswith('_meta'):
+            if does_file_exist is True \
+               and meta_loc.endswith('_meta'):
                 break
             else:
                 print('Please re-enter, the file location you gave does not \
-                exist or is not a _meta file.\n \
-                If you do not have the _meta file, your data is lost.')
+exist or is not a _meta file.\n \
+If you do not have the _meta file, your data is lost.')
     os.system('touch {}_temp'.format(file_loc))
     data = ''
     meta = ''
     # Read the file and meta file in the user-given location.
-    with open(file_loc, 'r') as f,
-    open(file_loc + '_temp', 'a') as f_t,
-    open(meta_loc, 'r') as m:
+    with open(file_loc, 'r') as f, \
+            open(file_loc + '_temp', 'a') as f_t, \
+            open(meta_loc, 'r') as m:
         data = f.read().splitlines()
         meta = m.read().splitlines()
         # This works by comparing the values in the meta file with how the
@@ -168,5 +168,5 @@ else:
         shlex.quote(file_loc), shlex.quote(meta_loc)))
 
     print('Your file: {} has been decrypted and the original meta file has \
-          been removed.\n'.format(file_loc) +
+been removed.\n'.format(file_loc) +
           'Thanks for using RAMEN.')
