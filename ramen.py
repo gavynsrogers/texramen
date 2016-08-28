@@ -26,6 +26,7 @@ print('''\
 
 print('DISCLAIMER: RAMEN IS NOT TRUE CRYPTOGRAPHY.\n \
 It is human proof, not computer proof.')
+
 # Generate a string of x random characters
 
 
@@ -64,8 +65,7 @@ if e_or_d == 'e':
     # The code is much nicer if the output files don't have a file extension.
     while True:
         print('What is the location of the textfile that you wish to encrypt? \
-\nIts file extension (.txt,.py,.html,etc) must be empty, though you may add \
-one later if you wish.')
+\nIts file extension must be empty, though you may add one later if you wish.')
         file_loc = input(': ')
         does_file_exist = os.path.isfile(file_loc)
         if '.' not in file_loc and does_file_exist is True:
@@ -80,8 +80,6 @@ one later if you wish.')
     # Open file_loc_temp and file_loc_meta
     with open(file_loc + '_temp', 'a') as f, \
             open(file_loc + '_meta', 'a') as f2:
-        # Write a random string of a random length between 5 and 20 to the
-        # beginningof the output file and mark it as such in the meta file.
         for idx, word in enumerate(temp_list):
             word_list = list(word)
             # Adds a random string in between every character in file.
@@ -90,10 +88,10 @@ one later if you wish.')
                 rand_str_loop = rand_str(random.randint(5, 20))
                 f.write('{}{}'.format(char, rand_str_loop))
                 f2.write('{}\n'.format(rand_str_loop))
-            f.write('\n')
+            f.write('###')
     os.system('rm {0} && mv {0}_temp {0}'.format(file_loc))
-    print('\nEncryption complete at {}\n\n'.format(file_loc) +
-          'Thank you for using RAMEN.\n')
+    print('\nEncryption complete at {}'.format(file_loc) +
+          '\n\nThank you for using RAMEN.\n')
     caution()
     print('If you lose your _meta file, you will NOT be able to recover\n \
 your data! I, the creator, am not responsible for this.\n')
@@ -110,8 +108,7 @@ PROCEED WITH CAUTION.')
     file_loc = ''
     while True:
         print('What is the location of the text file that you wish to \
-              decrypt? \n \
-              (This software isn\'t magic. It requires the RAMENmeta file.)')
+decrypt? \n(This software isn\'t magic. It requires the RAMEN meta file.)')
         file_loc = input(': ')
         does_file_exist = os.path.isfile(file_loc)
         if does_file_exist is True:
@@ -127,7 +124,7 @@ first one & \"_meta\"? (y/n) :')
     else:
         while True:
             print('What is the location of the meta file?\n \
-(It should simply be \"*/*_meta\")')
+(It should simply be \"folder/file_meta\")')
             meta_loc = input(': ')
             does_file_exist = os.path.isfile(meta_loc)
             if does_file_exist is True \
@@ -144,17 +141,20 @@ If you do not have the _meta file, your data is lost.')
     with open(file_loc, 'r') as f, \
             open(file_loc + '_temp', 'a') as f_t, \
             open(meta_loc, 'r') as m:
-        data = f.read().splitlines()
+        data = f.read().split('###')
         meta = m.read().splitlines()
         # This works by comparing the values in the meta file with how the
         # data starts. If the data starts with a value in the meta file, it
         # erases that random string and then writes the next letter to the
         # output file.
         for idx, word in enumerate(data):
-            if idx == 0:
-                f_t.write(list(word)[0])
-            else:
-                f_t.write(' {}'.format(list(word)[0]))
+            try:
+                if idx == 0:
+                    f_t.write(list(word)[0])
+                else:
+                    f_t.write(' {}'.format(list(word)[0]))
+            except:
+                pass
             word = word[1:]
             try:
                 for line in meta:
