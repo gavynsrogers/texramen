@@ -88,7 +88,7 @@ if e_or_d == 'e':
                 rand_str_loop = rand_str(random.randint(5, 20))
                 f.write('{}{}'.format(char, rand_str_loop))
                 f2.write('{}\n'.format(rand_str_loop))
-            f.write('###')
+            f.write('r4M#')
     os.system('rm {0} && mv {0}_temp {0}'.format(file_loc))
     print('\nEncryption complete at {}'.format(file_loc) +
           '\n\nThank you for using RAMEN.\n')
@@ -141,7 +141,7 @@ If you do not have the _meta file, your data is lost.')
     with open(file_loc, 'r') as f, \
             open(file_loc + '_temp', 'a') as f_t, \
             open(meta_loc, 'r') as m:
-        data = f.read().split('###')
+        data = f.read().split('r4M#')
         meta = m.read().splitlines()
         # This works by comparing the values in the meta file with how the
         # data starts. If the data starts with a value in the meta file, it
