@@ -64,22 +64,25 @@ if e_or_d == 'e':
     file_loc = ''
     # The code is much nicer if the output files don't have a file extension.
     while True:
-        print('What is the location of the textfile that you wish to encrypt? \
-\nIts file extension must be empty, though you may add one later if you wish.')
+        print('What is the location of the textfile that you wish to encrypt?')
         file_loc = input(': ')
         does_file_exist = os.path.isfile(file_loc)
-        if '.' not in file_loc and does_file_exist is True:
+        if does_file_exist is True:
+            if '.' in file_loc:
+                fname, fext = os.path.splitext(file_loc)
+                break
             break
         else:
             print('Please reenter, the file location you gave does not exist.')
-    os.system('touch {0}_temp && touch {0}_meta'.format(shlex.quote(file_loc)))
+    os.system('touch {0}_temp{1} && touch {0}_meta{1}'.format(
+            shlex.quote(fname), shlex.quote(fext)))
     temp = ''
     with open(file_loc, 'r') as f:
         temp = f.read().replace('\n', '')
     temp_list = re.findall(r"[\w']+|[.,!?;:]", temp)
-    # Open file_loc_temp and file_loc_meta
-    with open(file_loc + '_temp', 'a') as f, \
-            open(file_loc + '_meta', 'a') as f2:
+    # Open fname_temp and fname_meta
+    with open(fname + '_temp' + fext, 'a') as f, \
+            open(fname + '_meta' + fext, 'a') as f2:
         for idx, word in enumerate(temp_list):
             word_list = list(word)
             # Adds a random string in between every character in file.
@@ -89,7 +92,7 @@ if e_or_d == 'e':
                 f.write('{}{}'.format(char, rand_str_loop))
                 f2.write('{}\n'.format(rand_str_loop))
             f.write('r4M#')
-    os.system('rm {0} && mv {0}_temp {0}'.format(file_loc))
+    os.system('rm {0}{1} && mv {0}_temp{1} {0}{1}'.format(fname, fext))
     print('\nEncryption complete at {}'.format(file_loc) +
           '\n\nThank you for using RAMEN.\n')
     caution()
@@ -112,6 +115,7 @@ decrypt? \n(This software isn\'t magic. It requires the RAMEN meta file.)')
         file_loc = input(': ')
         does_file_exist = os.path.isfile(file_loc)
         if does_file_exist is True:
+            fname, fext = os.path.splitext(file_loc)
             break
         else:
             print('Please reenter, the file location you gave does not exist.')
@@ -120,7 +124,7 @@ decrypt? \n(This software isn\'t magic. It requires the RAMEN meta file.)')
     is_meta_same_format = input('Is the meta file location the same as the \
 first one & \"_meta\"? (y/n) :')
     if is_meta_same_format in 'Yy':
-        meta_loc = file_loc + '_meta'
+        meta_loc = fname + '_meta' + fext
     else:
         while True:
             print('What is the location of the meta file?\n \
@@ -128,18 +132,18 @@ first one & \"_meta\"? (y/n) :')
             meta_loc = input(': ')
             does_file_exist = os.path.isfile(meta_loc)
             if does_file_exist is True \
-               and meta_loc.endswith('_meta'):
+               and '_meta' in meta_loc:
                 break
             else:
                 print('Please re-enter, the file location you gave does not \
 exist or is not a _meta file.\n \
 If you do not have the _meta file, your data is lost.')
-    os.system('touch {}_temp'.format(file_loc))
+    os.system('touch {}_temp{}'.format(fname, fext))
     data = ''
     meta = ''
     # Read the file and meta file in the user-given location.
     with open(file_loc, 'r') as f, \
-            open(file_loc + '_temp', 'a') as f_t, \
+            open(fname + '_temp' + fext, 'a') as f_t, \
             open(meta_loc, 'r') as m:
         data = f.read().split('r4M#')
         meta = m.read().splitlines()
@@ -164,8 +168,9 @@ If you do not have the _meta file, your data is lost.')
                         word = word[1:]
             except IndexError:
                 pass
-    os.system('rm {0} && rm {1} && mv {0}_temp {0}'.format(
-        shlex.quote(file_loc), shlex.quote(meta_loc)))
+    os.system('rm {0} && rm {1} && mv {2}_temp{3} {0}'.format(
+        shlex.quote(file_loc), shlex.quote(meta_loc), shlex.quote(fname),
+        shlex.quote(fext)))
 
     print('Your file: {} has been decrypted and the original meta file has \
 been removed.\n'.format(file_loc) +
