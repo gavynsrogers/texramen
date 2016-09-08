@@ -62,7 +62,7 @@ print('The path to your file can be relative to the RAMEN directory.')
 if e_or_d == 'e':
     print('Please note that any formatting will not be kept in this version.')
     file_loc = ''
-    # The code is much nicer if the output files don't have a file extension.
+    # The code was much nicer when the output files couldn't have an extension.
     while True:
         print('What is the location of the textfile that you wish to encrypt?')
         file_loc = input(': ')
@@ -71,7 +71,9 @@ if e_or_d == 'e':
             if '.' in file_loc:
                 fname, fext = os.path.splitext(file_loc)
                 break
-            break
+            else:
+                fname, fext = os.path.splitext(file_loc)
+                fext = ''
         else:
             print('Please reenter, the file location you gave does not exist.')
     os.system('touch {0}_temp{1} && touch {0}_meta{1}'.format(
@@ -168,6 +170,7 @@ If you do not have the _meta file, your data is lost.')
                         word = word[1:]
             except IndexError:
                 pass
+        f_t.write('\n')
     os.system('rm {0} && rm {1} && mv {2}_temp{3} {0}'.format(
         shlex.quote(file_loc), shlex.quote(meta_loc), shlex.quote(fname),
         shlex.quote(fext)))
